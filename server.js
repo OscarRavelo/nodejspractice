@@ -1,4 +1,9 @@
 const express = require("express");
+const {
+  getMessages,
+  postMessage,
+} = require("./controllers/messages.controller");
+const { getFriends, postFriends } = require("./controllers/friends.controller");
 
 const app = express();
 
@@ -22,29 +27,16 @@ app.use(express.json());
 
 // post  request
 
-app.post("/friends", (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).send("Name is required");
-  }
-  const Newfriend = {
-    id: friends.length + 1,
-    name: req.body.name,
-  };
-  friends.push(Newfriend);
-  res.send(Newfriend);
-});
+app.post("/friends", postFriends);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/about", (req, res) => {
-  res.send("About Page");
-});
+app.get("/friends", getFriends);
+app.get("/messages", getMessages);
 
-app.get("/friends", (req, res) => {
-  res.send(friends);
-});
+app.post("/messages", postMessage);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
